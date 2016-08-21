@@ -2,11 +2,6 @@
 var globaltest=[];
 google.load('visualization', '1', {packages:['corechart']});
 
-google.setOnLoadCallback(function() {
-  angular.bootstrap(document.body, ['6ixApp']);
-});
-
-
 angular.module('MainController', ['IndicoService']).controller('MainController', ['$scope', '$timeout', '$window', 'IndicoService', function($scope, $timeout, $window, IndicoService) {
 
 	var that = this;
@@ -85,8 +80,51 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		});
 	};
 
+	this.getPhotos = function() {
+		var photoUrls = $scope.photos = [];
+		FB.api('/me/photos', function(response) {
+			var photos = response.data;
+			photos.forEach(function(photo, i) {
+				FB.api("/" + photo.id, {fields: "picture,link"}, function (response) {
+			    	photoUrls.push({picture: response.picture, link: response.link});
+			    	console.log(photoUrls.length);
+					if(i == photos.length - 1) {
+						that.getFacialRecognition(photoUrls);
+					}	
+				});
+			});
+		});
+
+	};
+
+	this.getFacialRecognition = function(photoUrls) {
+		IndicoService.getPhotos(photoUrls).then(function(res){
+			var photoEmotions = res.data;
+			var photos = $scope.photos;
+				console.log(photoEmotions);
+			for(var i = 0; i < photos.length; i++) {
+				console.log(i);
+				photoEmotions[i]["matchedEmotion"] = Object.keys(photoEmotions[i])[0];
+				for(emotion in photoEmotions[i]) {
+					if(photoEmotions[i][emotion] > photoEmotions[i][photoEmotions[i].matchedEmotion]) {
+						photoEmotions[i].matchedEmotion = emotion;
+					}
+				}
+
+				photoEmotions[i].url = photos[i].picture;
+				photoEmotions[i].link = photos[i].link;
+			};
+			console.log(photoEmotions);
+			$timeout(function(){
+				$scope.photoEmotions = photoEmotions;
+			});
+		}, function(err){
+			console.log(err);
+		});
+	};
+
 	this.getTags = function() {
-		FB.api('/' + $scope.user.id + '/posts', function(response) {
+		FB.api('/me/posts', function(response) {
 			var posts = response.data.filter(function(post) {
 				if(post.message) return true;
 				return false;
@@ -139,7 +177,7 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		}
 
 		console.log($scope.user.id +'/albums');
-		FB.api("/"+$scope.user.id +'/albums', {fields: ['id', 'type'], limit: 500}, function(response) {
+		FB.api('/me/albums', {fields: ['id', 'type'], limit: 500}, function(response) {
 			if (response && !response.error) {
 				var albumid;
 		        console.log(response);
@@ -227,4 +265,6 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 	$scope.loggedIn = false;
 	$scope.user = {};
 	$scope.tags = [];
+	$scope.photos = [];
+	$scope.photoEmotions = [];
 }]);

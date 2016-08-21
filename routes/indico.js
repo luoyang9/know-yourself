@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 router.post('/tags', function(req, res, next) {
 
 	res.header('Content-Type', 'application/json');
-	
+
 	indico.textTags(req.body.texts)
 	  .then(function(data) {
 	  	console.log(data);
@@ -23,6 +23,24 @@ router.post('/tags', function(req, res, next) {
 	  	console.log("indico failed: ", err);
 	  });
 
+});
+
+router.post('/facial', function(req, res, next) {
+	res.header('Content-Type', 'application/json');
+
+	var photos = req.body.photos.map(function(obj) {
+		return obj.picture;
+	});
+
+	console.log(photos.length);
+	indico.fer(photos)
+	  .then(function(data){
+	  	console.log(data.length);
+	  	res.send(data);
+	  })
+	  .catch(function(err) {
+	  	console.log("indico failed: ", err);
+	  });
 });
 
 module.exports = router;
