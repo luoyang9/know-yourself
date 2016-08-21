@@ -407,11 +407,11 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 			postIds.forEach(function(postId, i) {
 				FB.api('/' + postId + '/likes', function(response){
 					response.data.forEach(function(friend, i){
-						console.log("adding friends");
+						console.log("adding friends", i);
 						if(!friends[friend.name]) friends[friend.name] = 1;
 						else friends[friend.name]++;
 
-						if(i == postIds.length - 1) {
+						if(i == response.data.length - 1) {
 							console.log(friends);
 							var friendsArr = [];
 							for(var friend in friends) {
