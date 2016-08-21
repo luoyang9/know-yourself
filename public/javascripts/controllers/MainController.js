@@ -124,7 +124,6 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 		 	for(var i=0; i<ClarifaiResults.length; i++){
 		 		ClarifaiArr = ClarifaiArr.concat(ClarifaiResults[i].result.tag.classes);
-		 		console.log(ClarifaiResults[i].result.tag.classes);
 		 	}
 
 		 	var ClarifaiObj = {};
@@ -143,9 +142,11 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		 	ClarifaiObjArr.sort(function(a, b) {
 		 		return b[Object.keys(b)[0]] - a[Object.keys(a)[0]];
 		 	});
-		 	ClarifaiObjArr =ClarifaiObjArr.slice(0, 5).map(function(obj){
+
+		 	ClarifaiObjArr = ClarifaiObjArr.slice(0, 20).map(function(obj){
 		 		return Object.keys(obj)[0];
 		 	});
+
 
 		 	$timeout(function(){
 		 		$scope.imageTags = ClarifaiObjArr;
@@ -162,10 +163,8 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		IndicoService.getPhotos(photoUrls).then(function(res){
 			var photoEmotions = res.data;
 
-			console.log(photoEmotions);
 
 			var photos = $scope.photos;
-				console.log(photoEmotions);
 			for(var i = 0; i < photos.length; i++) {
 
 				photoEmotions[i]["matchedEmotion"] = Object.keys(photoEmotions[i])[0];
@@ -182,7 +181,6 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 					photoEmotions[i].exists = true;
 				}
 			};
-			console.log(photoEmotions);
 			$timeout(function(){
 				$scope.photoEmotions = photoEmotions;
 			});
