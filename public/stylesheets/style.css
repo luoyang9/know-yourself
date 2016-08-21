@@ -237,7 +237,11 @@ a:focus {
 .btn-default {
   border: 1px solid #42DCA3;
   color: #42DCA3;
-  background-color: transparent; }
+  background-color: rgba(0, 0, 0, 0.2); }
+
+  .btn-lg {
+    font-size: 30px;
+  }
 
 .btn-default:hover,
 .btn-default:focus {

@@ -21,7 +21,7 @@
               		<a class="page-scroll" ng-show="loggedIn" ng-click="main.logoutFacebook()">Welcome, {[{user.name}]}</a>
                 </li>
                 <li ng-show="loggedIn">
-              		<button ng-click="main.logoutFacebook()" class="btn btn-default">Log Out</button>
+              		<button style="margin-top: 7px;" ng-click="main.logoutFacebook()" class="btn btn-default">Log Out</button>
                 </li>
             </ul>
         </div>
@@ -40,7 +40,7 @@
                     <p class="intro-text">What does your facebook profile show about you?</p>
                     <button ng-hide="loggedIn" ng-click="main.loginFacebook()" class="btn btn-default">Log In</button>
 
-                    <a class="page-scroll" href="#info"><button ng-show="loggedIn" ng-click="main.generate()" class="btn btn-default">Generate</button></a>
+                    <a class="page-scroll" href="#info"><button ng-show="loggedIn" ng-click="main.generate()" class="btn btn-default btn-lg">Generate</button></a>
                 </div>
             </div>
         </div>
@@ -51,19 +51,19 @@
 	<div class="row">
 		<div class="col-sm-12" style="margin-bottom: 30px;">
             <h3 class='center'>Average Positivity of Your Posts: {[{positivity.average}]}%</h3>
-			<p style="margin-top: 30px;">Most Positive Post: <strong>{[{positivity.most}]}</strong></p>
-			<p>Least Positive Post: <strong>{[{positivity.least}]}</strong></p>
+			<p style="margin-top: 30px;">Most Positive Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{positivity.most}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
+			<p>Least Positive Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{positivity.least}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
 		</div>
 	</div>
 		<hr />
 	<div class="row" style="margin-top: 90px;">
 		<div class="col-sm-12" style="margin-bottom: 30px;">
 			<h3 class="center">Emotional Posts</h3>
-			<p style="margin-top: 30px;">Angriest Post: <strong>{[{emotion.anger}]}</strong></p>
-			<p style="margin-top: 30px;">Most Surprised Post: <strong>{[{emotion.surprise}]}</strong></p>
-			<p style="margin-top: 30px;">Saddest Post: <strong>{[{emotion.sad}]}</strong></p>
-			<p style="margin-top: 30px;">Most Fearful Post: <strong>{[{emotion.fear}]}</strong></p>
-			<p style="margin-top: 30px;">Most Joyful Post: <strong>{[{emotion.joy}]}</strong></p>
+			<p style="margin-top: 30px;">Angriest Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{emotion.anger}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
+			<p style="margin-top: 30px;">Most Surprised Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{emotion.surprise}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
+			<p style="margin-top: 30px;">Saddest Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{emotion.sad}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
+			<p style="margin-top: 30px;">Most Fearful Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{emotion.fear}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
+			<p style="margin-top: 30px;">Most Joyful Post: <i style="font-size: 14px;" class="fa fa-quote-left" aria-hidden="true"></i> <strong>{[{emotion.joy}]}</strong> <i style="font-size: 14px;" class="fa fa-quote-right" aria-hidden="true"></i></p>
 		</div>
 	</div>
 		<hr />
@@ -72,88 +72,90 @@
 
             <h3 class='center'>Top Interests Based on Posts/Likes</h3>
 
-            <div class="center" id="InterestsChart"></div>
+            <div style="margin-top: 30px;" id="InterestsChart"></div>
 
             <br>
 		</div>
         <div class="col-sm-6">
             <h3 class='center'>Popularity of Profile Pic Over Time</h3>
 
-            <div class='center' id="chartdiv"></div>
+            <div style="margin-top: 30px;" id="chartdiv"></div>
         </div>
 	</div>
+		<hr style="margin-top:90px" />
 </section>
-
-<section class="container content-section text-center">
+<section class="container content-section text-center" style="padding-top: 90px;">
 	<h3>What do your photos say about you?</h3>
     <button class="btn btn-default" ng-click="main.getPhotos()">Get Photos</button>
 	<div class="row" style="margin-top: 30px;">
-        <h2>Times when you were: </h2>
+        <h4>Times when you were: </h4>
 		<div class="col-lg-2">
-			<h2>Happy</h2>
+			<h4>Happy</h4>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Happy' , exists: true}">
 				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg" /></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Surprised</h2>
+			<h4>Surprised</h4>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Surprise' , exists: true}">
 				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Sad</h2>
+			<h4>Sad</h4>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Sad' , exists: true}">
 				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Afraid</h2>
+			<h4>Afraid</h4>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Fear' , exists: true}" >
 				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Angry</h2>
+			<h4>Angry</h4>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Angry' , exists: true}">
 				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Neutral</h2>
+			<h4>Neutral</h4>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Neutral'}">
 				<img ng-src="{[{photo.url}]}" class="fbimg"/>
 			</div>
 		</div>
 	</div>
 
-    <div class='row'>
+    <div class='row' style="margin-top: 90px;">
         <div class="col-lg-12">
             <h3>Common keywords found in your photos:</h3>
         </div>
         <div class="row">
            <div class="col-md-3" ng-repeat="tag in imageTags | limitTo: imageTags.length: 0">
-               {[{tag}]}
+               <i class="fa fa-tag" aria-hidden="true"></i> {[{tag}]}
            </div>    
         </div>
     </div>
+    <hr style="margin-top: 90px"/>
 </section>
 
-<section id="info" class="container content-section text-center">
+<section style="padding-top:90px;" id="info" class="container content-section text-center">
 	<div class="row">
 		<h3>Your Top 5 Friends</h3>
 		<button ng-click="main.getFriendLikes()" class="btn btn-default">Retrieve Friends</button>
 	</div>
 	<div>
-		<p ng-repeat="friend in friends" style="margin-top: 30px;"><strong ng-repeat="(key, value) in friend"> {[{key}]}: {[{value}]} likes</strong></p>
+		<p ng-repeat="friend in friends" style="margin-top: 30px;"><i class="fa fa-user" aria-hidden="true"></i><span ng-repeat="(key, value) in friend"> {[{key}]}: <strong>{[{value}]}</strong> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span></p>
 	</div>
+    <hr style="margin-top: 90px"/>
 </section>
 
 <!-- About Section -->
-<section id="about" class="container content-section text-center">
+<section style="padding-top:90px;" id="about" class="container content-section text-center">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <h2>About {{title}}</h2>
+            <h3>About {{title}}</h3>
             <p>{{title}} is a hack created at Hack the 6ix Summer 2016. It analyzes your Facebook profile and provides a report of information, such as your most talked about topic, your popularity, and the emotions behind your photos.</p>
         </div>
     </div>
