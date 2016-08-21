@@ -84,46 +84,54 @@
 </section>
 
 <section class="container content-section text-center">
-	<h3>What do your photos show about your emotions?</h3>
+	<h3>What do your photos say about you?</h3>
     <button class="btn btn-default" ng-click="main.getPhotos()">Get Photos</button>
 	<div class="row" style="margin-top: 30px;">
+        <h2>Times when you were: </h2>
 		<div class="col-lg-2">
 			<h2>Happy</h2>
-			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Happy'}">
-				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" /></a>
+			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Happy' , exists: true}">
+				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg" /></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Surprise</h2>
-			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Surprise'}">
-				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" /></a>
+			<h2>Surprised</h2>
+			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Surprise' , exists: true}">
+				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
 			<h2>Sad</h2>
-			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Sad'}">
-				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" /></a>
+			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Sad' , exists: true}">
+				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
-			<h2>Fear</h2>
-			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Fear'}">
-				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" /></a>
+			<h2>Afraid</h2>
+			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Fear' , exists: true}" >
+				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
 			<h2>Angry</h2>
-			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Angry'}">
-				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" /></a>
+			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Angry' , exists: true}">
+				<a href="{[{photo.link}]}" target="_blank"><img ng-src="{[{photo.url}]}" class="fbimg"/></a>
 			</div>
 		</div>
 		<div class="col-lg-2">
 			<h2>Neutral</h2>
 			<div class="photo" ng-repeat="photo in photoEmotions | filter:{matchedEmotion: 'Neutral'}">
-				<img ng-src="{[{photo.url}]}" />
+				<img ng-src="{[{photo.url}]}" class="fbimg"/>
 			</div>
 		</div>
 	</div>
+
+    <div class='row'>
+        <div class="col-lg-12">
+            <h3>Common tags:</h3>
+            <p ng-repeat="tag in imageTags">-{[{tag}]}</p>
+        </div>
+    </div>
 </section>
 
 <!-- About Section -->

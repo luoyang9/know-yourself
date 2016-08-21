@@ -15,4 +15,8 @@ angular.module('IndicoService', []).service('IndicoService', ['$http', function(
 	this.getEmotions = function(posts) {
 		return $http.post('/indico/emotion', {posts: posts});
 	};
+
+	this.getPhotoTags = function(photos) {
+		return $http.post('/clarifai/imageTags', {photos: photos});
+	};
 }]);

@@ -92,6 +92,7 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 					if(photoUrls.length == photos.length) {
 						that.getFacialRecognition(photoUrls);
+						that.getPhotoTags(photoUrls);
 					}	
 				});
 			});
@@ -99,23 +100,87 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 	};
 
+	function CountFreq(arr) {
+	    var a = [], b = [], prev;
+
+	    arr.sort();
+	    for ( var i = 0; i < arr.length; i++ ) {
+	        if ( arr[i] !== prev ) {
+	            a.push(arr[i]);
+	            b.push(1);
+	        } else {
+	            b[b.length-1]++;
+	        }
+	        prev = arr[i];
+	    }
+
+	    return [a,b];
+	}
+
+	this.getPhotoTags = function(photoUrls){
+		 IndicoService.getPhotoTags(photoUrls).then(function(res){
+		 	var ClarifaiResults = res.data.results;
+		 	var ClarifaiArr = [];
+
+		 	for(var i=0; i<ClarifaiResults.length; i++){
+		 		ClarifaiArr = ClarifaiArr.concat(ClarifaiResults[i].result.tag.classes);
+		 		console.log(ClarifaiResults[i].result.tag.classes);
+		 	}
+
+		 	var ClarifaiObj = {};
+		 	for(var i = 0; i < ClarifaiArr.length; i++) {
+		 		if(!ClarifaiObj[ClarifaiArr[i]]) ClarifaiObj[ClarifaiArr[i]] = 1;
+		 		else ClarifaiObj[ClarifaiArr[i]]++;
+		 	}
+
+		 	var ClarifaiObjArr = [];
+		 	for(var key in ClarifaiObj) {
+		 		var obj = {};
+		 		obj[key] = ClarifaiObj[key];
+		 		ClarifaiObjArr.push(obj);
+		 	}
+
+		 	ClarifaiObjArr.sort(function(a, b) {
+		 		return b[Object.keys(b)[0]] - a[Object.keys(a)[0]];
+		 	});
+		 	ClarifaiObjArr =ClarifaiObjArr.slice(0, 5).map(function(obj){
+		 		return Object.keys(obj)[0];
+		 	});
+
+		 	$timeout(function(){
+		 		$scope.imageTags = ClarifaiObjArr;
+		 	});
+		 }, function(err){
+			console.log(err);
+		});
+	}
+
+
+
 	this.getFacialRecognition = function(photoUrls) {
 		console.log(photoUrls.length);
 		IndicoService.getPhotos(photoUrls).then(function(res){
 			var photoEmotions = res.data;
+
+			console.log(photoEmotions);
+
 			var photos = $scope.photos;
 				console.log(photoEmotions);
 			for(var i = 0; i < photos.length; i++) {
-				console.log(i);
+
 				photoEmotions[i]["matchedEmotion"] = Object.keys(photoEmotions[i])[0];
 				for(emotion in photoEmotions[i]) {
 					if(photoEmotions[i][emotion] > photoEmotions[i][photoEmotions[i].matchedEmotion]) {
+
 						photoEmotions[i].matchedEmotion = emotion;
 					}
 				}
 
-				photoEmotions[i].url = photos[i].picture;
-				photoEmotions[i].link = photos[i].link;
+				if(photoEmotions[i][photoEmotions[i].matchedEmotion] > 0.4){
+					photoEmotions[i].url = photos[i].picture;
+					photoEmotions[i].link = photos[i].link;
+					photoEmotions[i].exists = true;
+				}
 			};
 			console.log(photoEmotions);
 			$timeout(function(){
@@ -400,4 +465,5 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 	$scope.photoEmotions = [];
 	$scope.positivity = {};
 	$scope.emotion = {};
+	$scope.imageTags = [];
 }]);

@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var indico = require('./routes/indico');
+var clarifai = require('./routes/clarifai');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/indico', indico);
+app.use('/clarifai', clarifai);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
