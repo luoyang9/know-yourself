@@ -83,7 +83,7 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 	this.getPhotos = function() {
 		var photoUrls = $scope.photos = [];
-		FB.api('/me/photos?type=uploaded', function(response) {
+		FB.api('/me/photos?type=tagged', function(response) {
 			var photos = response.data;
 			var facialRecognition = false;
 			photos.forEach(function(photo, i) {
