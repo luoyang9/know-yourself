@@ -47,7 +47,7 @@
     </div>
 </header>
 
-<section id="info" class="container content-section text-center">
+<section id="info" class="container content-section text-center" ng-show="showposts">
 	<div class="row">
 		<div class="col-sm-12" style="margin-bottom: 30px;">
             <h3 class='center'>Average Positivity of Your Posts: {[{positivity.average}]}%</h3>
@@ -87,7 +87,7 @@
 <section class="container content-section text-center">
 	<h3>What do your photos say about you?</h3>
     <button class="btn btn-default" ng-click="main.getPhotos()">Get Photos</button>
-	<div class="row" style="margin-top: 30px;">
+	<div class="row" style="margin-top: 30px;" ng-show="showphotos">
         <h2>Times when you were: </h2>
 		<div class="col-lg-2">
 			<h2>Happy</h2>
@@ -127,7 +127,7 @@
 		</div>
 	</div>
 
-    <div class='row'>
+    <div class='row' ng-show="showphotos">
         <div class="col-lg-12">
             <h3>Common keywords found in your photos:</h3>
         </div>
@@ -144,7 +144,7 @@
 		<h3>Your Top 5 Friends</h3>
 		<button ng-click="main.getFriendLikes()" class="btn btn-default">Retrieve Friends</button>
 	</div>
-	<div>
+	<div ng-show="showfriends">
 		<p ng-repeat="friend in friends" style="margin-top: 30px;"><strong ng-repeat="(key, value) in friend"> {[{key}]}: {[{value}]} likes</strong></p>
 	</div>
 </section>

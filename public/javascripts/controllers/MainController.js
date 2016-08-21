@@ -150,6 +150,8 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 		 	$timeout(function(){
 		 		$scope.imageTags = ClarifaiObjArr;
+
+				$scope.showphotos = true;
 		 	});
 		 }, function(err){
 			console.log(err);
@@ -491,6 +493,8 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 							$timeout(function() {
 								$scope.friends = friendsArr;
+
+								$scope.showfriends = true;		
 							});
 						}
 					});
@@ -505,9 +509,15 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		that.getTags();
 		that.getPopularity();
 		that.getInfo();
+
+		$scope.showposts = true;
 	}
 
 	$scope.loggedIn = false;
+	$scope.showposts = false;
+	$scope.showphotos = false;
+	$scope.showfriends = false;
+
 	$scope.user = {};
 	$scope.tags = [];
 	$scope.photos = [];
