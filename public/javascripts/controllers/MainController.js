@@ -1,4 +1,4 @@
-angular.module('MainController', []).controller('MainController', ['$scope', '$window', function($scope, $window) {
+angular.module('MainController', ['IndicoService']).controller('MainController', ['$scope', '$window', 'IndicoService', function($scope, $window, IndicoService) {
 
 	var that = this;
 
@@ -56,6 +56,21 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$w
 		});
 	};
 
+	this.getTags = function(text) {
+		FB.api('/' + $scope.user.id + '/posts', function(response) {
+			$scope.$apply(function() {
+				$scope.tags = response;
+			});
+		});	
+		/*
+		IndicoService.getTags(text).then(function(res) {
+			console.log(res);
+		}, function(err) {
+			console.log(err);
+		});*/
+	};
+
 	$scope.loggedIn = false;
 	$scope.user = {};
+	$scope.tags = {};
 }]);
