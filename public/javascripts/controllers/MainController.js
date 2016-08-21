@@ -44,8 +44,15 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 			else {
 				console.log("log in failed");
 			}
-		});
+		}, {scope: 'public_profile,user_friends,user_about_me,user_birthday,user_education_history,user_events,user_hometown,user_likes,user_location,user_photos,user_posts,user_relationships,user_relationship_details,user_religion_politics,user_tagged_places,user_videos,user_website,user_work_history'});
 	};
+
+	// this.logoutFacebook = function(){
+	// 	FB.logout(function(response){
+	// 		that.loggedIn = false;
+	// 		console.log("loggedout successful");
+	// 	});
+	// }
 
 	this.getUser = function() {
 		FB.api('/me', function(response) {
@@ -68,6 +75,19 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		}, function(err) {
 			console.log(err);
 		});*/
+	};
+
+	this.getPopularity = function(){
+		console.log($scope.user.id +'/albums');
+		FB.api("/"+$scope.user.id +'/albums', {fields: 'id'}, function(response) {
+			if (response && !response.error) {
+		        console.log(response);
+		    }
+		    else{
+		    	console.log(response.error);
+		    }
+		  
+		});
 	};
 
 	$scope.loggedIn = false;
