@@ -68,4 +68,17 @@ router.post('/emotion', function(req, res, next) {
 	  });
 });
 
+router.post('/people', function(req, res, next) {
+	res.header('Content-Type', 'application/json');
+
+	indico.people(req.body.posts)
+	  console.log(req.body.posts)
+	  .then(function(data){
+	  	res.send(data);
+	  })
+	  .catch(function(err) {
+	  	console.log("indico failed: ", err);
+	  });
+});
+
 module.exports = router;

@@ -58,6 +58,7 @@
 		<hr />
 	<div class="row" style="margin-top: 90px;">
 		<div class="col-sm-12" style="margin-bottom: 30px;">
+			<h3 class="center">Emotional Posts</h3>
 			<p style="margin-top: 30px;">Angriest Post: <strong>{[{emotion.anger}]}</strong></p>
 			<p style="margin-top: 30px;">Most Surprised Post: <strong>{[{emotion.surprise}]}</strong></p>
 			<p style="margin-top: 30px;">Saddest Post: <strong>{[{emotion.sad}]}</strong></p>
@@ -69,14 +70,14 @@
 	<div class="row" style="margin-top: 90px;">
 		<div class="col-sm-6">
 
-            <h3 class='center'>Interests Based on Posts/Likes</h3>
+            <h3 class='center'>Top Interests Based on Posts/Likes</h3>
 
             <div class="center" id="InterestsChart"></div>
 
             <br>
 		</div>
         <div class="col-sm-6">
-            <h3 class='center'>Popularity of Profile Pic</h3>
+            <h3 class='center'>Popularity of Profile Pic Over Time</h3>
 
             <div class='center' id="chartdiv"></div>
         </div>
@@ -134,12 +135,22 @@
     </div>
 </section>
 
+<section id="info" class="container content-section text-center">
+	<div class="row">
+		<h3>Your Top 5 Friends</h3>
+		<button ng-click="main.getFriendLikes()" class="btn btn-default">Retrieve Friends</button>
+	</div>
+	<div>
+		<p ng-repeat="friend in friends" style="margin-top: 30px;"><strong ng-repeat="(key, value) in friend"> {[{key}]}: {[{value}]} likes</strong></p>
+	</div>
+</section>
+
 <!-- About Section -->
 <section id="about" class="container content-section text-center">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
             <h2>About {{title}}</h2>
-            <p>{{title}} is a hack created at Hack the 6ix Summmer 2016. It analyzes your Facebook profile and provides a report of information, such as your most talked about topic, your popularity, and the emotions behind your photos.</p>
+            <p>{{title}} is a hack created at Hack the 6ix Summer 2016. It analyzes your Facebook profile and provides a report of information, such as your most talked about topic, your popularity, and the emotions behind your photos.</p>
         </div>
     </div>
 </section>

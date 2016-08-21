@@ -234,7 +234,7 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 			}).map(function(post) {
 				return post.message;
 			});
-
+			console.log(response);
 			IndicoService.getEmotions(posts).then(function(res) {
 				var angerIndex = 0;
 				var surpriseIndex = 0;
@@ -272,6 +272,17 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		
 		});	
 	};
+
+	// this.getFeed = function(){
+	// 	FB.api('/me/posts?limit=1000', function(response) {
+	// 		var posts = response.data.filter(function(post) {
+	// 			if(post.message) return true;
+	// 			return false;
+	// 		}).map(function(post) {
+	// 			return post.message;
+	// 		});
+	// 	});
+	// };
 
 	this.getTags = function() {
 		FB.api('/me/posts?limit=1000', function(response) {
@@ -449,6 +460,46 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		);
 	}
 
+	this.getFriendLikes = function() {
+		FB.api('/me/posts?limit=1000', function(response) {
+			console.log(response);
+			var postIds = response.data.map(function(post){
+				return post.id;
+			});
+
+			var friends = $scope.friends;
+			console.log(postIds);
+			postIds.forEach(function(postId, i) {
+				FB.api('/' + postId + '/likes', function(response){
+					response.data.forEach(function(friend, i){
+						console.log("adding friends", i);
+						if(!friends[friend.name]) friends[friend.name] = 1;
+						else friends[friend.name]++;
+
+						if(i == response.data.length - 1) {
+							console.log(friends);
+							var friendsArr = [];
+							for(var friend in friends) {
+								console.log(friend);
+								var obj = {};
+								obj[friend] = friends[friend];
+								friendsArr.push(obj);
+							}
+
+							friendsArr.sort(function(a, b) {
+								return b[Object.keys(b)[0]] - a[Object.keys(a)[0]];
+							});
+							friendsArr = friendsArr.slice(0, 5);
+
+							$timeout(function() {
+								$scope.friends = friendsArr;
+							});
+						}
+					});
+				});
+			});
+		});
+	};
 
 	this.generate = function(){
 		that.getPositivity();
@@ -466,4 +517,5 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 	$scope.positivity = {};
 	$scope.emotion = {};
 	$scope.imageTags = [];
+	$scope.friends = {};
 }]);
