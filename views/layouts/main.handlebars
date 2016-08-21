@@ -1,11 +1,27 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
   	<meta charset="utf-8">
-    <title>{{title}}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Gift Suggestion</title>
+
+  	<link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    <link href="/stylesheets/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  	<link rel='stylesheet' href='/stylesheets/style.css' />
+  	
+  	<script src="/javascripts/angular.min.js"></script>
+  	<script src="/javascripts/angular-ui.min.js"></script>
+    <script src="/javascripts/services/AuthService.js"></script>
+  	<script src="/javascripts/controllers/MainController.js"></script>
+  	<script src="/javascripts/app.js"></script>
+
   </head>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-  <body>
+  <body ng-app="6ixApp" ng-controller="MainController as main">
   	{{{body}}}
   </body>
 </html>
