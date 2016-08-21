@@ -43,4 +43,28 @@ router.post('/facial', function(req, res, next) {
 	  });
 });
 
+router.post('/positivity', function(req, res, next) {
+	res.header('Content-Type', 'application/json');
+
+	indico.sentimentHQ(req.body.posts)
+	  .then(function(data){
+	  	res.send(data);
+	  })
+	  .catch(function(err) {
+	  	console.log("indico failed: ", err);
+	  });
+});
+
+router.post('/emotion', function(req, res, next) {
+	res.header('Content-Type', 'application/json');
+
+	indico.emotion(req.body.posts)
+	  .then(function(data){
+	  	res.send(data);
+	  })
+	  .catch(function(err) {
+	  	console.log("indico failed: ", err);
+	  });
+});
+
 module.exports = router;

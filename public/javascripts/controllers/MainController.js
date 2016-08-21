@@ -126,8 +126,8 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		});
 	};
 
-	this.getTags = function() {
-		FB.api('/me/posts', function(response) {
+	this.getPositivity = function() {
+		FB.api('/me/posts?limit=1000', function(response) {
 			var posts = response.data.filter(function(post) {
 				if(post.message) return true;
 				return false;
@@ -135,60 +135,151 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 				return post.message;
 			});
 
-			IndicoService.getTags(posts).then(function(res) {
+			IndicoService.getPositivity(posts).then(function(res) {
+				var mostIndex = 0;
+				var leastIndex = 0;
+				var sum = 0;
+
+				for(var i = 1; i < res.data.length; i++) {
+					sum += res.data[i];
+					if(res.data[i] > res.data[mostIndex]) {
+						mostIndex = i;
+					}
+					if(res.data[i] < res.data[leastIndex]) {
+						leastIndex = i;
+					}
+				}
 				$timeout(function(){
-					var tags = [];
-
-					res.data.forEach(function(obj) {
-						for(var category in obj) {
-							var tag = {};
-							tag[category] = obj[category];
-							
-							var exists = false;
-							tags.forEach(function(tag) {
-								if(tag.hasOwnProperty(category)) {
-									exists = true;
-								}
-							});
-
-							if(!exists) {
-								tags.push(tag);
-							}
-							else {
-								tags[category] += obj[category];
-							}
-						}
-					});
-					tags.sort(function(a, b) {
-						return b[Object.keys(b)[0]] - a[Object.keys(a)[0]]; 
-					});
-					tags = tags.slice(0, 5);
-					console.log(tags);
-
-					var options = {
-						'title': 'Activities and Interests',
-						legend: {position: 'none'},
-						'width':500,
-						'height':300,
-						hAxis:  { textPosition: 'none' }
-					};
-
-					var data = new google.visualization.DataTable();
-					data.addColumn('string', 'Activity');
-					data.addColumn('number', 'Interest');
-
-					for(var j=0; j<5; j++){
-						var a = tags[j];
-						data.addRow([Object.keys(a)[0], a[Object.keys(a)[0]]]);
-					}								     
-
-				    var chart = new google.visualization.BarChart(document.getElementById('InterestsChart'));
-
-				     chart.draw(data,options);
+					$scope.positivity.most = posts[mostIndex];
+					$scope.positivity.least = posts[leastIndex];
+					$scope.positivity.average = Math.round(sum/res.data.length * 100);
 				});
 			}, function(err) {
 				console.log(err);
 			});
+		
+		});	
+	};
+
+	this.getEmotions= function() {
+		FB.api('/me/posts?limit=1000', function(response) {
+			var posts = response.data.filter(function(post) {
+				if(post.message) return true;
+				return false;
+			}).map(function(post) {
+				return post.message;
+			});
+
+			IndicoService.getEmotions(posts).then(function(res) {
+				var angerIndex = 0;
+				var surpriseIndex = 0;
+				var sadIndex = 0;
+				var fearIndex = 0;
+				var joyIndex = 0;
+
+				for(var i = 1; i < res.data.length; i++) {
+					if(res.data[i].anger > res.data[angerIndex].anger) {
+						angerIndex = i;
+					}
+					if(res.data[i].surprise > res.data[surpriseIndex].surprise) {
+						surpriseIndex = i;
+					}
+					if(res.data[i].sad > res.data[sadIndex].sad) {
+						sadIndex = i;
+					}
+					if(res.data[i].fear > res.data[fearIndex].fear) {
+						fearIndex = i;
+					}
+					if(res.data[i].joy > res.data[joyIndex].joy) {
+						joyIndex = i;
+					}
+				}
+				$timeout(function(){
+					$scope.emotion.anger = posts[angerIndex];
+					$scope.emotion.surprise = posts[surpriseIndex];
+					$scope.emotion.sad = posts[sadIndex];
+					$scope.emotion.fear = posts[fearIndex];
+					$scope.emotion.joy = posts[joyIndex];
+				});
+			}, function(err) {
+				console.log(err);
+			});
+		
+		});	
+	};
+
+	this.getTags = function() {
+		FB.api('/me/posts?limit=1000', function(response) {
+			var posts = response.data.filter(function(post) {
+				if(post.message) return true;
+				return false;
+			}).map(function(post) {
+				return post.message;
+			});
+
+			FB.api('/me/likes', function(response) {
+				var likes = response.data.map(function(like) {
+					return like.name;
+				});
+				var texts = posts.concat(likes);
+				console.log(texts);
+				IndicoService.getTags(texts).then(function(res) {
+					$timeout(function(){
+						var tags = [];
+
+						res.data.forEach(function(obj) {
+							for(var category in obj) {
+								var tag = {};
+								tag[category] = obj[category];
+								
+								var exists = false;
+								tags.forEach(function(tag) {
+									if(tag.hasOwnProperty(category)) {
+										exists = true;
+									}
+								});
+
+								if(!exists) {
+									tags.push(tag);
+								}
+								else {
+									tags[category] += obj[category];
+								}
+							}
+						});
+						tags.sort(function(a, b) {
+							return b[Object.keys(b)[0]] - a[Object.keys(a)[0]]; 
+						});
+						tags = tags.slice(0, 5);
+						console.log(tags);
+
+						var options = {
+							'title': 'Activities and Interests',
+							legend: {position: 'none'},
+							'width':500,
+							'height':300,
+							hAxis:  { textPosition: 'none' }
+						};
+
+						var data = new google.visualization.DataTable();
+						data.addColumn('string', 'Activity');
+						data.addColumn('number', 'Interest');
+
+						for(var j=0; j<5; j++){
+							var a = tags[j];
+							data.addRow([Object.keys(a)[0], a[Object.keys(a)[0]]]);
+						}								     
+
+					    var chart = new google.visualization.BarChart(document.getElementById('InterestsChart'));
+
+					     chart.draw(data,options);
+					});
+				}, function(err) {
+					console.log(err);
+				});
+			});
+
+		
 		});	
 
 	};
@@ -295,6 +386,8 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 
 
 	this.generate = function(){
+		that.getPositivity();
+		that.getEmotions();
 		that.getTags();
 		that.getPopularity();
 		that.getInfo();
@@ -305,4 +398,6 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 	$scope.tags = [];
 	$scope.photos = [];
 	$scope.photoEmotions = [];
+	$scope.positivity = {};
+	$scope.emotion = {};
 }]);
