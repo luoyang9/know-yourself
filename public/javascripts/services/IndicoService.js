@@ -15,4 +15,8 @@ angular.module('IndicoService', []).service('IndicoService', ['$http', function(
 	this.getEmotions = function(posts) {
 		return $http.post('/indico/emotion', {posts: posts});
 	};
+
+	this.getPeople = function(posts){
+		return $http.post('/indico/people', {posts: posts});
+	}
 }]);

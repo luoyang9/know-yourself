@@ -127,12 +127,22 @@
 	</div>
 </section>
 
+<section id="info" class="container content-section text-center">
+	<div class="row">
+		<h3>Your Top 5 Friends</h3>
+		<button ng-click="main.getFriendLikes()" class="btn btn-default">Retrieve Friends</button>
+	</div>
+	<div>
+		<p ng-repeat="friend in friends" style="margin-top: 30px;"><strong ng-repeat="(key, value) in friend"> {[{key}]}: {[{value}]} likes</strong></p>
+	</div>
+</section>
+
 <!-- About Section -->
 <section id="about" class="container content-section text-center">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
             <h2>About {{title}}</h2>
-            <p>{{title}} is a hack created at Hack the 6ix Summmer 2016. It analyzes your Facebook profile and provides a report of information, such as your most talked about topic, your popularity, and the emotions behind your photos.</p>
+            <p>{{title}} is a hack created at Hack the 6ix Summer 2016. It analyzes your Facebook profile and provides a report of information, such as your most talked about topic, your popularity, and the emotions behind your photos.</p>
         </div>
     </div>
 </section>
