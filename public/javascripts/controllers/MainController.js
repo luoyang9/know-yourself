@@ -76,6 +76,7 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		});
 	}
 
+
 	this.getUser = function() {
 		FB.api('/me', function(response) {
 			$timeout(function(){
@@ -123,7 +124,27 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 					});
 					tags = tags.slice(0, 5);
 					console.log(tags);
-					$scope.tags = tags;
+
+					var options = {
+						'title': 'Activities and Interests',
+						legend: {position: 'none'},
+						'width':500,
+						'height':300,
+						hAxis:  { textPosition: 'none' }
+					};
+
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Activity');
+					data.addColumn('number', 'Interest');
+
+					for(var j=0; j<5; j++){
+						var a = tags[j];
+						data.addRow([Object.keys(a)[0], a[Object.keys(a)[0]]]);
+					}								     
+
+				    var chart = new google.visualization.BarChart(document.getElementById('InterestsChart'));
+
+				     chart.draw(data,options);
 				});
 			}, function(err) {
 				console.log(err);
@@ -146,7 +167,6 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 				for(var i=0; i<response.data.length; i++){
 					if (response.data[i].type == "profile"){
 						albumid = response.data[i].id;
-						console.log(albumid);
 						break;
 					}
 				}
@@ -178,19 +198,14 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 										vAxis:  { textPosition: 'none' }
 									};
 
-									console.log("length: " + profileinfo.length);
-
 									var data = new google.visualization.DataTable();
 									data.addColumn('date', 'date');
       								data.addColumn('number', 'popularity');
 
 									for(var j=0; j<profileinfo.length; j++){
 
-										console.log(new Date(datesCreated[j]) + " " + likes[j]);
 										data.addRow([new Date(datesCreated[j]), likes[j]]);
 									}								     
-
-									console.log(data);
 
 								    var chart = new google.visualization.LineChart(document.getElementById('chartdiv'));
 
@@ -223,6 +238,27 @@ angular.module('MainController', ['IndicoService']).controller('MainController',
 		  
 		});
 	};
+
+	this.getInfo = function(){
+		FB.api(
+		    "/"+$scope.user.id,{fields: 'website'},
+		    function (response) {
+		      if (response && !response.error) {
+		        console.log(response);
+		      }
+		      else{
+		      	console.log(response.error);
+		      }
+		    }
+		);
+	}
+
+
+	this.generate = function(){
+		that.getTags();
+		that.getPopularity();
+		that.getInfo();
+	}
 
 	$scope.loggedIn = false;
 	$scope.user = {};
