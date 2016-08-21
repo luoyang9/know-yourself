@@ -1,4 +1,4 @@
-
+<<<<<<< HEAD
 var globaltest=[];
 google.load('visualization', '1', {packages:['corechart']});
 
@@ -6,9 +6,10 @@ google.setOnLoadCallback(function() {
   angular.bootstrap(document.body, ['6ixApp']);
 });
 
-
+angular.module('MainController', []).controller('MainController', ['$scope', '$window', function($scope, $window) {
+=======
 angular.module('MainController', ['IndicoService']).controller('MainController', ['$scope', '$window', 'IndicoService', function($scope, $window, IndicoService) {
-
+>>>>>>> 3cadb80de24e770d987f762c8d90ec17657f892e
 
 	var that = this;
 
