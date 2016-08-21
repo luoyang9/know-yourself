@@ -13,9 +13,10 @@ router.get('/', function(req, res, next) {
 router.post('/tags', function(req, res, next) {
 
 	res.header('Content-Type', 'application/json');
-
-	indico.textTags(req.body.text)
+	
+	indico.textTags(req.body.texts)
 	  .then(function(data) {
+	  	console.log(data);
 	  	res.send(data);
 	  })
 	  .catch(function(err) {
